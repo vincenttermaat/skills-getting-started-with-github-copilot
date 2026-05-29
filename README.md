@@ -12,5 +12,39 @@ Remember, it's self-paced so feel free to take a break! ☕️
 
 ---
 
+## Run the project locally
+
+### 1. Create and activate the virtual environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Start the API server
+
+```bash
+uvicorn src.app:app --reload --host 0.0.0.0 --port 8000
+```
+
+### 4. Open the app
+
+- Visit `http://127.0.0.1:8000/` to open the static frontend
+- Visit `http://127.0.0.1:8000/docs` to explore the FastAPI docs
+
+## Run the test suite
+
+```bash
+pytest -q
+```
+
+---
+
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 

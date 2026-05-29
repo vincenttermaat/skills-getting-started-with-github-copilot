@@ -106,3 +106,46 @@ def test_activity_not_found_unregister(client):
     # Assert
     assert resp.status_code == 404
     assert "not found" in resp.json()["detail"]
+
+
+def test_get_cities_for_country_or_region(client):
+    # Arrange
+    country_or_region = "United States"
+    encoded = quote(country_or_region, safe="")
+
+    # Act
+    resp = client.get(f"/locations/{encoded}/cities")
+
+    # Assert
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["country_or_region"] == country_or_region
+    assert "cities" in data
+    assert "New York" in data["cities"]
+
+
+def test_get_cities_not_found(client):
+    # Arrange
+    country_or_region = "Atlantis"
+    encoded = quote(country_or_region, safe="")
+
+    # Act
+    resp = client.get(f"/locations/{encoded}/cities")
+
+    # Assert
+    assert resp.status_code == 404
+    assert "not found" in resp.json()["detail"].lower()
+
+def test_get_cities_for_spain(client):
+    # Arrange
+    country_or_region = "Spain"
+    encoded = quote(country_or_region, safe="")
+
+    # Act
+    resp = client.get(f"/locations/{encoded}/cities")
+
+    # Assert
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["country_or_region"] == country_or_region
+    assert data["cities"] == ["Seville"]

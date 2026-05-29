@@ -77,6 +77,16 @@ activities = {
     }
 }
 
+# In-memory city database keyed by country or region
+cities_by_region = {
+    "united states": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+    "canada": ["Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa"],
+    "europe": ["Paris", "Berlin", "Madrid", "Rome", "Amsterdam"],
+    "india": ["Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata"],
+    "brazil": ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador", "Fortaleza"],
+    "spain": ["Seville"]
+}
+
 
 @app.get("/")
 def root():
@@ -86,6 +96,18 @@ def root():
 @app.get("/activities")
 def get_activities():
     return activities
+
+
+@app.get("/locations/{country_or_region}/cities")
+def get_cities(country_or_region: str):
+    normalized = country_or_region.replace("-", " ").lower()
+    if normalized not in cities_by_region:
+        raise HTTPException(status_code=404, detail="Country or region not found")
+
+    return {
+        "country_or_region": country_or_region,
+        "cities": cities_by_region[normalized]
+    }
 
 
 @app.post("/activities/{activity_name}/signup")
